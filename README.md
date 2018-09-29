@@ -1,6 +1,10 @@
 # CCF BDCI 2018 汽车行业用户观点主题及情感识别 比赛试水
 
-[TOC]
+[//]: <>(TOC)
+
+## 数据分析
+
+详见`data/analysis`
 
 ## 解决方案
 
@@ -28,13 +32,14 @@
 ## 文献和参考资料
 
 1. 分类工具的使用
+
    1. [libSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)、[MaxEnt](https://homepages.inf.ed.ac.uk/lzhang10/maxent.html)、[sci-kit learn](http://scikit-learn.org/stable/)
+   
 2. 样本不均衡问题
    1. 南大一位博士写的综述（比较简单）[PDF](http://lamda.nju.edu.cn/liyf/dm14/111220005.pdf)
 
 ## TODO
 
-- [] 分类工具的使用
-
-- [] 解决样本不均衡问题
-- [] 分类器参数调整
+- [ ] 分类工具的使用
+- [ ] 解决样本不均衡问题
+- [ ] 分类器参数调整

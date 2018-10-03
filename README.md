@@ -1,6 +1,42 @@
 # CCF BDCI 2018 汽车行业用户观点主题及情感识别 比赛试水
 
-[//]: <>(TOC)
+--------
+<!-- TOC -->
+
+- [CCF BDCI 2018 汽车行业用户观点主题及情感识别 比赛试水](#ccf-bdci-2018-汽车行业用户观点主题及情感识别-比赛试水)
+    - [文件目录](#文件目录)
+    - [数据分析](#数据分析)
+    - [解决方案](#解决方案)
+        - [方案一：文本分类法](#方案一文本分类法)
+    - [文献和参考资料](#文献和参考资料)
+
+<!-- /TOC -->
+
+---------
+
+## 文件目录
+```
+│  README.md 说明文档
+│
+├─data 数据
+│  │  hlt_stop_words.txt 停用词表
+│  │
+│  ├─analysis
+│  │      dataset_analysis.ipynb 数据集测试及初步分析代码
+│  │
+│  ├─test_public
+│  │      test_public.csv 数据集中的测试集文件
+│  │
+│  └─train
+│          train.csv 数据集中的训练集文件
+│
+├─report 实验报告
+│      ExperimentReport-ZhuTong.md
+│
+└─src 源码
+        SGD.ipynb 使用SGDClassifier进行分类
+        SVC.ipynb 使用SVC进行分类
+```
 
 ## 数据分析
 
@@ -27,19 +63,29 @@
 - 对于特定问题缺乏灵活性
 - 参数选取繁琐
 
+目前使用了两个分类器进行分类测试，值得注意的是，目前还未对sentiment_word字段进行有效的应用，且主题分类器和情感分类器之间彼此割裂，分别独立。目前需要解决数据的利用问题和主题与情感割裂的问题。
 
+线上结果如下：
+- SVC（RBF核的SVM算法），最终线上测试结果为：`0.35952064000`
+- SGD（LinearSVM），最终线上测试结果为：`0.59387480000`
+
+问题解决流程：
+1. 文本分词
+2. 统计词频
+3. 计算TF-IDF矩阵
+4. 对上述步骤所产生的矩阵进行分类操作，构建分类器
+5. 带入测试集，得到预测结果
 
 ## 文献和参考资料
 
-1. 分类工具的使用
-
-   1. [libSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)、[MaxEnt](https://homepages.inf.ed.ac.uk/lzhang10/maxent.html)、[sci-kit learn](http://scikit-learn.org/stable/)
+- 分类工具的使用
+   - [libSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)
+   - [MaxEnt](https://homepages.inf.ed.ac.uk/lzhang10/maxent.html)
+   - [sci-kit learn](http://scikit-learn.org/stable/)
    
-2. 样本不均衡问题
-   1. 南大一位博士写的综述（比较简单）[PDF](http://lamda.nju.edu.cn/liyf/dm14/111220005.pdf)
+- 样本不均衡问题
+   - 南大一位博士写的综述（比较简单）[PDF](http://lamda.nju.edu.cn/liyf/dm14/111220005.pdf)
 
-## TODO
-
-- [ ] 分类工具的使用
-- [ ] 解决样本不均衡问题
-- [ ] 分类器参数调整
+- 帮助较大的一些Github仓库
+    - [IMDB情感分析-LSTM-tflearn](https://github.com/llSourcell/How_to_do_Sentiment_Analysis)
+    - [京东文本分类-SGD-sklearn](https://github.com/stevewyl/keras_text_classification/blob/master/jd/ml_text_classification.py)

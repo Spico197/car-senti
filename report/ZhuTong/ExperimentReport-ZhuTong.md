@@ -150,3 +150,43 @@
         - `SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3, max_iter= 5, random_state=42)` L2正则化，学习率$10^{-3}$
     - 参考资源
         - [京东文本分类-SGD-sklearn](https://github.com/stevewyl/keras_text_classification/blob/master/jd/ml_text_classification.py)
+
+- 2018/10/04 星期四 
+
+    - 今天准备使用keras复现TextCNN
+    - 参考资源
+        - [Yoon Kim, 2014](https://arxiv.org/abs/1408.5882)
+
+- 2018/10/07 星期日
+
+    - 今天对一些神经网络模型进行了简单的复现
+    - 模型：MLP、单层LSTM、TextInception ([Chen Yun, 2017](https://zhuanlan.zhihu.com/p/28923961))
+    - 过拟合非常严重：利用Chen的方法，在经过25个epoch之后，验证的`F1`和`loss`分别如下图所示
+    ![F1](./figures/textinception_f1.jpg)
+    ![loss](./figures/textinception_loss.jpg)
+    - 解决方案
+        - 尝试使用`gensim`库的`word2vec`词向量重新表示
+        但是词向量的训练结果并不令人满意。e.g.与价格最接近的几个词：
+        ```python
+        # 从直观印象上来看，结果很不好，并且在语义上并不接近
+        # 可能是Word2Vec训练参数有问题
+        [
+            ('sti', 0.9968149662017822), 
+            ('就别', 0.9960107207298279), 
+            ('丰富', 0.995136559009552), 
+            ('es', 0.9951053261756897), 
+            ('懂车', 0.9950652718544006), 
+            ('各有所爱', 0.9941401481628418), 
+            ('店内', 0.9938971400260925), 
+            ('吓人', 0.9938815236091614), 
+            ('科迪亚克', 0.9938446879386902), 
+            ('劝', 0.9936362504959106)
+        ]
+        ```
+        - 下一步将尝试使用情感词典发掘情感词对
+            - [关于情感分析的工具-知乎](https://www.zhihu.com/question/20631050)
+            里面提到了SnowNLP，但是使用类似的工具和直接调用百度API有啥区别，囧。。。
+            - [情感词汇本体-大连理工大学](http://ir.dlut.edu.cn/EmotionOntologyDownload/)
+            大工的这个工具大概看了下，发现里面有“优惠”，没有“便宜”，词汇虽然有近3W个，但还是不全。
+            - [HowNet](http://www.keenage.com)
+            官网没备案，现在进不去，囧。补一个简介：[在深度学习时代用HowNet搞事情-刘知远](https://zhuanlan.zhihu.com/p/32688983)

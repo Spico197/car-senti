@@ -18,8 +18,10 @@
 ```
 │  README.md 说明文档
 │
-├─data 数据
+├─data
 │  │  hlt_stop_words.txt 停用词表
+│  │  test_data_after_cut.pkl content字段已切词的训练集数据
+│  │  train_data_after_cut.pkl content字段已切词的测试集数据
 │  │
 │  ├─analysis
 │  │      dataset_analysis.ipynb 数据集测试及初步分析代码
@@ -30,12 +32,22 @@
 │  └─train
 │          train.csv 数据集中的训练集文件
 │
-├─report 实验报告
-│      ExperimentReport-ZhuTong.md
+├─output
+│      output.csv 一个输出样本
 │
-└─src 源码
+├─report
+│  └─ZhuTong
+│      │  ExperimentReport-ZhuTong.md 实验报告
+│      │
+│      └─figures
+│              textinception_f1.jpg
+│              textinception_loss.jpg
+│
+└─src
         SGD.ipynb 使用SGDClassifier进行分类
         SVC.ipynb 使用SVC进行分类
+        text_inception.py 一个keras实现的TextInception模型
+        word2vec_trainning.py Word2Vec训练代码
 ```
 
 ## 数据分析

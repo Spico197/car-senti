@@ -14,8 +14,8 @@ class Tool(object):
 
         self.segmentor = pyltp.Segmentor()
         self.segmentor.load_with_lexicon(self.__cws_model_path, './../data/word_dict.txt')
-        self.posttagger = pyltp.Postagger()
-        self.posttagger.load(self.__pos_model_path)
+        self.postagger = pyltp.Postagger()
+        self.postagger.load(self.__pos_model_path)
         self.parser = pyltp.Parser()
         self.parser.load(self.__par_model_path)
         
@@ -30,7 +30,7 @@ class Tool(object):
 
     def release(self):
         self.segmentor.release()
-        self.posttagger.release()
+        self.postagger.release()
         self.parser.release()
 
     def __del__(self):
@@ -54,10 +54,10 @@ class Tool(object):
         words_n = []
         if isinstance(words, list):
             words_n = words
-            postags = list(self.posttagger.postag(words_n))
+            postags = list(self.postagger.postag(words_n))
         elif isinstance(words, str):
             words_n = self.cut(words)
-            postags = list(self.posttagger.postag(words_n))
+            postags = list(self.postagger.postag(words_n))
         
         for i in range(len(words_n)):
             if self.isforeignword(words_n[i]):
@@ -125,12 +125,18 @@ class Relations(object):
     def insert(self, num, relation):
         self.relations.insert(num, relation)
 
-    def get_rls_by_current_node_num(self, num):
-        re = Relation(Node(), Node(), '')
+    def get_rlss_by_current_node_num(self, num):
+        re = []
         for rls in self.relations:
             if rls.current_node.num == num:
-                re = rls
-                break
+                re.append(rls)
+        return re
+
+    def get_rlss_by_next_node_num(self, num):
+        re = []
+        for rls in self.relations:
+            if rls.next_node.num == num:
+                re.append(rls)
         return re
 
     def get_prev_rls_by_num_and_poss(self, current_node_num, prev_pos):
@@ -150,6 +156,7 @@ class Relations(object):
                 re.append(rls)
         return re
 
+    """
     def get_noun_sequence(self):
         noun_seq = []
         taboo_num_set = set()
@@ -173,15 +180,19 @@ class Relations(object):
             if noun_rlss:
                 noun_seq.append(noun_rlss)
         return noun_seq
+        """
+    
+    def get_seq(self):
+        pass
                         
 
 def main(args):
-    # if args.input:
-    #     string = args.input
-    # else:
-    #     raise argparse.ArgumentError
+    if args.input:
+        string = args.input
+    else:
+        raise argparse.ArgumentError
     
-    string = args # debug 模式下开启
+    # string = args # debug 模式下开启
 
     tool = Tool()
     tool.load_tag_dict('./../data/tag_dict.txt')
@@ -206,7 +217,7 @@ def main(args):
         nodes.add(next_node)
 
         # rls = Relation(current_node, next_node, arc.relation)
-        rls = Relation(next_node, current_node, arc.relation)        
+        rls = Relation(current_node, next_node, arc.relation)        
         rlss.add(rls)
 
         print(rls)
@@ -214,16 +225,16 @@ def main(args):
 
     print('-'*40)
 
-    seq = rlss.get_noun_sequence()
-    for _ in seq:
-        for __ in _:
-            print(__, end=' ')
-        print()
+    # seq = rlss.get_noun_sequence()
+    # for _ in seq:
+    #     for __ in _:
+    #         print(__, end=' ')
+    #     print()
 
 
 if __name__ == '__main__':
-    # argp = argparse.ArgumentParser()
-    # argp.add_argument("input", help="input string u want to analyse")
-    # args = argp.parse_args()
-    args = '森林人的价格很贵' # debug模式下开启
+    argp = argparse.ArgumentParser()
+    argp.add_argument("input", help="input string u want to analyse")
+    args = argp.parse_args()
+    # args = '森林人的价格很贵' # debug模式下开启
     main(args)
